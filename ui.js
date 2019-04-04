@@ -33,7 +33,7 @@ $(async function () {
     // set the global user to the user instance
     currentUser = userInstance;
     syncCurrentUserToLocalStorage();
-    loginAndSubmitForm();
+    await loginAndSubmitForm();
   });
 
   /**
@@ -52,7 +52,7 @@ $(async function () {
     const newUser = await User.create(username, password, name);
     currentUser = newUser;
     syncCurrentUserToLocalStorage();
-    loginAndSubmitForm();
+    await loginAndSubmitForm();
   });
 
   /**
@@ -161,7 +161,7 @@ $(async function () {
   /**
    * A rendering function to run to reset the forms and hide the login info
    */
-  function loginAndSubmitForm() {
+  async function loginAndSubmitForm() {
     // hide the forms for logging in and signing up
     $loginForm.hide();
     $createAccountForm.hide();
@@ -175,6 +175,9 @@ $(async function () {
 
     // update the navigation bar
     showNavForLoggedInUser();
+
+    //update story
+    await generateStories();
   }
 
   /**
@@ -202,20 +205,31 @@ $(async function () {
   function generateStoryHTML(story) {
     let hostName = getHostName(story.url);
 
-    let favoriteId = (currentUser.favorites.map(function (obj) {
-      let arrayofstoryID = obj.storyId;
-      return arrayofstoryID;
-    }))
-
-    //check to see if the current Id is in the array
-    // we want change the class to be the dark star
-
     let classOfStar;
-    if (favoriteId.includes(story.storyId)) {
-      classOfStar = "fas fa-star";
+
+    //if currentUser is null (not logged in)
+    //then set classOfStar to empty star
+
+    if (currentUser === null) {
+      classOfStar = 'far fa-star'
+
+      //else see if story is in favorite list
     } else {
-      classOfStar = "far fa-star";
+      let favoriteId = (currentUser.favorites.map(function (obj) {
+        let arrayofstoryID = obj.storyId;
+        return arrayofstoryID;
+      }))
+
+      //check to see if the current Id is in the array
+      // we want change the class to be the dark star
+
+      if (favoriteId.includes(story.storyId)) {
+        classOfStar = "fas fa-star";
+      } else {
+        classOfStar = "far fa-star";
+      }
     }
+
     // render story markup
     const storyMarkup = $(`
       <li id="${story.storyId}"><span class="list-star"><i class="${classOfStar}"></i></span>
