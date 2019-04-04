@@ -94,13 +94,12 @@ $(async function () {
     let author = $("#author").val();
     let title = $("#title").val();
     let url = $("#url").val();
-    let username = currentUser.username;
-    let storyId = (Math.random() * 10000).toString();
-    let createAt = moment().format(moment.HTML5_FMT.DATETIME_LOCAL)
-    let updatedAt = moment().format(moment.HTML5_FMT.DATETIME_LOCAL)
 
     let user = currentUser;
-    let storyObj = { author: author, title: title, url: url, username: username, storyId: storyId, createAt: createAt, updatedAt: updatedAt }
+    let storyObj = { author: author, title: title, url: url};
+
+    await storyList.addStory(user, storyObj);
+    generateStories();
 
 
 
@@ -138,6 +137,9 @@ $(async function () {
     hideElements();
     await generateStories();
     $allStoriesList.show();
+    if(currentUser){
+      $submitForm.show();
+    };
   });
 
   /**
@@ -239,7 +241,7 @@ $(async function () {
   function showNavForLoggedInUser() {
     $navLogin.hide();
     $navLogOut.show();
-    $submitForm.removeClass("hidden")
+    $submitForm.show();
   }
 
   // simple function to pull the hostname from a URL

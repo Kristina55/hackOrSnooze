@@ -41,22 +41,22 @@ class StoryList {
     //where it will be appended to the DOM
 
     let body = {
-      token: "PASTE_YOUR_TOKEN_HERE",
+      token: user.loginToken,
       story: {
-        author: "Elie Schoppik",
-        title: "Four Tips for Moving Faster as a Developer",
-        url: "https://www.rithmschool.com/blog/developer-productivity"
+        author: newStory.author,
+        title: newStory.title,
+        url: newStory.url
       }
     }
 
     const response = await $.post(`${BASE_URL}/stories`, body);
     // build a new User instance from the API response
-    const newUser = new User(response.user);
+    // const newUser = new User(response.user);
 
-    // attach the token to the newUser instance for convenience
-    newUser.loginToken = response.token;
+    // // attach the token to the newUser instance for convenience
+    // newUser.loginToken = response.token;
 
-    return new Story(newStory)
+     return response;
 
   }
 }
