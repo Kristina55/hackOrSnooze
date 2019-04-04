@@ -86,17 +86,13 @@ $(async function () {
   $submitForm.on("submit", async function (evt) {
     evt.preventDefault(); // no page refresh
 
-    //WE ARE HEREEEEEE!!!!!!!!!!
-
-
-
     // grab the required fields
     let author = $("#author").val();
     let title = $("#title").val();
     let url = $("#url").val();
 
     let user = currentUser;
-    let storyObj = { author: author, title: title, url: url};
+    let storyObj = { author, title, url };
 
     await storyList.addStory(user, storyObj);
     generateStories();
@@ -137,7 +133,7 @@ $(async function () {
     hideElements();
     await generateStories();
     $allStoriesList.show();
-    if(currentUser){
+    if (currentUser) {
       $submitForm.show();
     };
   });
@@ -206,9 +202,23 @@ $(async function () {
   function generateStoryHTML(story) {
     let hostName = getHostName(story.url);
 
+    let favoriteId = (currentUser.favorites.map(function (obj) {
+      let arrayofstoryID = obj.storyId;
+      return arrayofstoryID;
+    }))
+
+    //check to see if the current Id is in the array
+    // we want change the class to be the dark star
+
+    let classOfStar;
+    if (favoriteId.includes(story.storyId)) {
+      classOfStar = "fas fa-star";
+    } else {
+      classOfStar = "far fa-star";
+    }
     // render story markup
     const storyMarkup = $(`
-      <li id="${story.storyId}">
+      <li id="${story.storyId}"><span class="list-star"><i class="${classOfStar}"></i></span>
         <a class="article-link" href="${story.url}" target="a_blank">
           <strong>${story.title}</strong>
         </a>
@@ -217,9 +227,34 @@ $(async function () {
         <small class="article-username">posted by ${story.username}</small>
       </li>
     `);
+    // create array of Id's of current favorites
+
+
 
     return storyMarkup;
   }
+
+
+
+
+
+
+
+  $(".articles-list").on("click", ".fa-star", function () {
+
+    let className = $(this).attr("class") === "far fa-star" ? "fas fa-star" : "far fa-star";
+    console.log(className)
+    $(this).attr("class", className)
+
+    console.log($(this).parent().parent().attr('id'))
+
+    let storyId = $(this).parent().parent().attr('id')
+
+    if (className === 'fas fa-star') {
+      currentUser.faveStory(storyId)
+    }
+  })
+
 
 
 

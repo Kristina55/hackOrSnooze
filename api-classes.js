@@ -56,7 +56,7 @@ class StoryList {
     // // attach the token to the newUser instance for convenience
     // newUser.loginToken = response.token;
 
-     return response;
+    return response;
 
   }
 }
@@ -78,6 +78,21 @@ class User {
     this.favorites = [];
     this.ownStories = [];
   }
+
+  async faveStory(storyId) {
+
+    let url = `https://hack-or-snooze-v2.herokuapp.com/users/${this.username}/favorites/${storyId}`
+    let body = {
+      token: this.loginToken
+    }
+
+    const response = await $.post(url, body);
+
+    this.favorites = response.user.favorites
+    console.log(response, this.favorites)
+  }
+
+
 
   /*
    A class method to create a new user - it accepts a username, password and name
