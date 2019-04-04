@@ -31,10 +31,14 @@ class StoryList {
      The function should accept the current instance of User who will post the story
      It should also accept an object which with a title, author, and url
      */
-  
+
   async addStory(user, newStory) {
     // TODO - Implement this functions!
-    // this function should return the newly created story so it can be used in the script.js file where it will be appended to the DOM
+    // this function should return the newly created story so it can be used in the script.js file 
+    //where it will be appended to the DOM
+
+
+
   }
 }
 

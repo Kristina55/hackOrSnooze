@@ -1,4 +1,4 @@
-$(async function() {
+$(async function () {
   // cache some selectors we'll be using quite a bit
   const $allStoriesList = $("#all-articles-list");
   const $submitForm = $("#submit-form");
@@ -21,7 +21,7 @@ $(async function() {
    * Event listener for logging in.
    *  If successfully we will setup the user instance
    */
-  $loginForm.on("submit", async function(evt) {
+  $loginForm.on("submit", async function (evt) {
     evt.preventDefault(); // no page-refresh on submit
 
     // grab the username and password
@@ -40,7 +40,7 @@ $(async function() {
    * Event listener for signing up.
    *  If successfully we will setup a new user instance
    */
-  $createAccountForm.on("submit", async function(evt) {
+  $createAccountForm.on("submit", async function (evt) {
     evt.preventDefault(); // no page refresh
 
     // grab the required fields
@@ -56,9 +56,61 @@ $(async function() {
   });
 
   /**
+   * Event listener for submitting a story
+   *  If success we will append story to DOM
+   */
+
+  {/* <label for="author">author</label>
+        <input id="author" required type="text" placeholder="author name">
+      </div>
+      <div>
+        <label for="title">title</label>
+        <input id="title" required type="text" placeholder="article title">
+      </div>
+      <div>
+        <label for="url">url</label>
+        <input id="url" required type="url" placeholder="article url">
+      </div> */}
+
+
+  // {
+  //   this.author = storyObj.author;
+  //   this.title = storyObj.title;
+  //   this.url = storyObj.url;
+  //   this.username = storyObj.username;
+  //   this.storyId = storyObj.storyId;
+  //   this.createdAt = storyObj.createdAt;
+  //   this.updatedAt = storyObj.updatedAt;
+  // }
+
+  $submitForm.on("submit", async function (evt) {
+    evt.preventDefault(); // no page refresh
+
+    // grab the required fields
+    let author = $("#author").val();
+    let title = $("#title").val();
+    let url = $("#url").val();
+    let username = currentUser;
+    let storyId = (Math.random() * 10000).toString();
+    let createAt = moment().format(moment.HTML5_FMT.DATETIME_LOCAL)
+    let updatedAt = moment().format(moment.HTML5_FMT.DATETIME_LOCAL)
+
+
+
+
+    let storyObj = { author: author, title: title, url: url, username: username, storyId: storyId, createAt: createAt, updatedAt: updatedAt }
+
+    // call the create story method, which calls the API and then builds a new story
+    const newUser = await User.create(username, password, name);
+    currentUser = newUser;
+    syncCurrentUserToLocalStorage();
+    loginAndSubmitForm();
+  });
+
+  /**
    * Log Out Functionality
    */
-  $navLogOut.on("click", function() {
+  $navLogOut.on("click", function () {
     // empty out local storage
     localStorage.clear();
     // refresh the page, clearing memory
@@ -68,7 +120,7 @@ $(async function() {
   /**
    * Event Handler for Clicking Login
    */
-  $navLogin.on("click", function() {
+  $navLogin.on("click", function () {
     // Show the Login and Create Account Forms
     $loginForm.slideToggle();
     $createAccountForm.slideToggle();
@@ -78,7 +130,7 @@ $(async function() {
   /**
    * Event handler for Navigation to Homepage
    */
-  $("body").on("click", "#nav-all", async function() {
+  $("body").on("click", "#nav-all", async function () {
     hideElements();
     await generateStories();
     $allStoriesList.show();
