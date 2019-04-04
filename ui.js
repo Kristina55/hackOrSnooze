@@ -86,25 +86,29 @@ $(async function () {
   $submitForm.on("submit", async function (evt) {
     evt.preventDefault(); // no page refresh
 
+    //WE ARE HEREEEEEE!!!!!!!!!!
+
+
+
     // grab the required fields
     let author = $("#author").val();
     let title = $("#title").val();
     let url = $("#url").val();
-    let username = currentUser;
+    let username = currentUser.username;
     let storyId = (Math.random() * 10000).toString();
     let createAt = moment().format(moment.HTML5_FMT.DATETIME_LOCAL)
     let updatedAt = moment().format(moment.HTML5_FMT.DATETIME_LOCAL)
 
-
-
-
+    let user = currentUser;
     let storyObj = { author: author, title: title, url: url, username: username, storyId: storyId, createAt: createAt, updatedAt: updatedAt }
 
-    // call the create story method, which calls the API and then builds a new story
-    const newUser = await User.create(username, password, name);
-    currentUser = newUser;
-    syncCurrentUserToLocalStorage();
-    loginAndSubmitForm();
+
+
+    // // call the create story method, which calls the API and then builds a new story
+    // const newUser = await User.create(username, password, name);
+    // currentUser = newUser;
+    // syncCurrentUserToLocalStorage();
+    // loginAndSubmitForm();
   });
 
   /**

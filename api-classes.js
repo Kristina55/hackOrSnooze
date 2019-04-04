@@ -32,12 +32,31 @@ class StoryList {
      It should also accept an object which with a title, author, and url
      */
 
+
+
+
   async addStory(user, newStory) {
     // TODO - Implement this functions!
     // this function should return the newly created story so it can be used in the script.js file 
     //where it will be appended to the DOM
 
+    let body = {
+      token: "PASTE_YOUR_TOKEN_HERE",
+      story: {
+        author: "Elie Schoppik",
+        title: "Four Tips for Moving Faster as a Developer",
+        url: "https://www.rithmschool.com/blog/developer-productivity"
+      }
+    }
 
+    const response = await $.post(`${BASE_URL}/stories`, body);
+    // build a new User instance from the API response
+    const newUser = new User(response.user);
+
+    // attach the token to the newUser instance for convenience
+    newUser.loginToken = response.token;
+
+    return new Story(newStory)
 
   }
 }
