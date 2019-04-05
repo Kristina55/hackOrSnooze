@@ -276,6 +276,9 @@ $(async function () {
 
   $(".articles-list").on("click", ".fa-star", async function () {
 
+    //if user is not logged in just return from function
+    if (currentUser == null) return
+
     let className = $(this).attr("class") === "far fa-star" ? "fas fa-star" : "far fa-star";
     // console.log(className)
     $(this).attr("class", className)
