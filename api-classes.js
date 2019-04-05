@@ -93,20 +93,19 @@ class User {
 
     var token = this.loginToken;
 
-    $.ajax({
-        url:`https://hack-or-snooze-v2.herokuapp.com/users/${this.username}/favorites/${storyId}`,
-        method: "delete",
-        data: { token :token},
-        success:function(response){
-          this.favorites = response.user.favorites;
-          console.log(response, this.favorites)
-        }
+    const response = await $.ajax({
+      url: `https://hack-or-snooze-v2.herokuapp.com/users/${this.username}/favorites/${storyId}`,
+      method: "delete",
+      data: { token: token }
     })
-    
+
+    this.favorites = response.user.favorites
+    console.log(response, this.favorites)
+
 
     //let url = `https://hack-or-snooze-v2.herokuapp.com/users/${this.username}/favorites/${storyId}`
     //let body = {
-      //token: this.loginToken
+    //token: this.loginToken
     //}
 
     // const response = await $.delete(url, body);
