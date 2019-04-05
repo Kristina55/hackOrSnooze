@@ -234,7 +234,6 @@ $(async function () {
         <small class="article-author">by ${story.author}</small>
         <small class="article-hostname ${hostName}">(${hostName})</small>
         <small class="article-username">posted by ${story.username}</small>
-        
       </li>
     `);
     // create array of Id's of current favorites
@@ -259,6 +258,18 @@ $(async function () {
 
     if (className === 'fas fa-star') {
       currentUser.faveStory(storyId)
+    }
+  })
+
+  $("#favorite-stories").on("click", function(){
+
+    // empty out that part of the page
+    $allStoriesList.empty();
+
+    // loop through all of our stories and generate HTML for them
+    for (let favoriteStory of currentUser.favorites) {
+      const result = generateStoryHTML(favoriteStory);
+      $allStoriesList.append(result);
     }
   })
 

@@ -88,7 +88,7 @@ class User {
     console.log(response, this.favorites)
   }
 
-
+  
 
   /*
    A class method to create a new user - it accepts a username, password and name
