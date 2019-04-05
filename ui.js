@@ -225,6 +225,26 @@ $(async function () {
       }
     }
 
+    let deleteButton = ''
+    //if user is logged in (curr user not null)
+    // else delete button is blank
+    if (currentUser !== null) {
+      // if story is part of currentUser.ownStories then we can render an the delte button else dont render delete button
+      const storyIsNotPartOfUserStories = (currentUser.ownStories.every(s => {
+        return s.storyId !== story.storyId
+      }))
+      if (storyIsNotPartOfUserStories) {
+        deleteButton = ''
+      } else {
+        deleteButton = `<i class="delete-story fas fa-times"></i>`
+      }
+
+    }
+
+
+
+
+
     // render story markup
     const storyMarkup = $(`
       <li id="${story.storyId}"><span class="list-star"><i class="${classOfStar}"></i></span>
@@ -233,6 +253,7 @@ $(async function () {
         </a>
         <small class="article-author">by ${story.author}</small>
         <small class="article-hostname ${hostName}">(${hostName})</small>
+        ${deleteButton}
         <small class="article-username">posted by ${story.username}</small>
       </li>
     `);
@@ -263,6 +284,22 @@ $(async function () {
   })
 
 
+  $(".articles-list").on("click", ".delete-story", async function () {
+
+
+    //get storyId that was clicked
+    let storyId = $(this).parent().attr('id')
+
+    //call remove method from storylist instance
+
+    await storyList.deleteStory(currentUser, storyId)
+
+    //refresh the entire page for all current stories 
+    await generateStories();
+
+  })
+
+
 
 
 
@@ -277,8 +314,6 @@ $(async function () {
       $allStoriesList.append(result);
     }
   })
-
-
 
 
   // hide all elements in elementsArr

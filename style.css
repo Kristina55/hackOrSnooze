@@ -215,6 +215,11 @@ form > hr {
   display: none;
 }
 
+/* .delete-story {
+  position: absolute;
+  right:800px;
+} */
+
 
 @media screen and (max-width: 576px) {
   body {

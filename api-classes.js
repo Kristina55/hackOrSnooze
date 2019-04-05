@@ -52,6 +52,30 @@ class StoryList {
     // // attach the token to the newUser instance for convenience
     // newUser.loginToken = response.token;
 
+    //add new story to story list
+    this.stories.unshift(response.story)
+
+    //add new story to user.ownSotries list
+    user.ownStories.push(response.story)
+
+    return response;
+
+  }
+
+
+  async deleteStory(user, storyId) {
+
+    const response = await $.ajax({
+      url: `https://hack-or-snooze-v2.herokuapp.com/stories/${storyId}`,
+      method: "delete",
+      data: { token: user.loginToken }
+    })
+
+    //remove the story form this.stories
+    this.stories = this.stories.filter(storyObj => {
+      return storyObj.storyId !== storyId
+    })
+
     return response;
 
   }
