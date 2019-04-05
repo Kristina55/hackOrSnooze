@@ -8,6 +8,7 @@ $(async function () {
   const $ownStories = $("#my-articles");
   const $navLogin = $("#nav-login");
   const $navLogOut = $("#nav-logout");
+  const $favoriteStory = $("#favorite-stories")
 
   // global storyList variable
   let storyList = null;
@@ -96,14 +97,6 @@ $(async function () {
 
     await storyList.addStory(user, storyObj);
     generateStories();
-
-
-
-    // // call the create story method, which calls the API and then builds a new story
-    // const newUser = await User.create(username, password, name);
-    // currentUser = newUser;
-    // syncCurrentUserToLocalStorage();
-    // loginAndSubmitForm();
   });
 
   /**
@@ -155,7 +148,9 @@ $(async function () {
 
     if (currentUser) {
       showNavForLoggedInUser();
+      
     }
+    
   }
 
   /**
@@ -239,6 +234,7 @@ $(async function () {
         <small class="article-author">by ${story.author}</small>
         <small class="article-hostname ${hostName}">(${hostName})</small>
         <small class="article-username">posted by ${story.username}</small>
+        
       </li>
     `);
     // create array of Id's of current favorites
@@ -246,8 +242,6 @@ $(async function () {
 
     return storyMarkup;
   }
-
-
 
 
 
@@ -290,6 +284,7 @@ $(async function () {
     $navLogin.hide();
     $navLogOut.show();
     $submitForm.show();
+    $favoriteStory.show();
   }
 
   // simple function to pull the hostname from a URL

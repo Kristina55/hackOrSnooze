@@ -55,6 +55,7 @@ nav {
   margin-left: auto;
 }
 
+
 .container {
   display: flex;
   flex-direction: column;
@@ -213,6 +214,7 @@ form > hr {
 .hidden {
   display: none;
 }
+
 
 @media screen and (max-width: 576px) {
   body {
