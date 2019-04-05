@@ -16,6 +16,9 @@ $(async function () {
   // global currentUser variable
   let currentUser = null;
 
+  // global favorite state
+  let isInFavoriteState = false;
+
   await checkIfLoggedIn();
 
   /**
@@ -92,6 +95,9 @@ $(async function () {
     let title = $("#title").val();
     let url = $("#url").val();
 
+    // clear input fields
+    $submitForm[0].reset();
+
     let user = currentUser;
     let storyObj = { author, title, url };
 
@@ -129,6 +135,12 @@ $(async function () {
     if (currentUser) {
       $submitForm.show();
     };
+
+    //empty input fileds
+
+
+    //change favorite state to off
+    isInFavoriteState = false
   });
 
   /**
@@ -241,10 +253,6 @@ $(async function () {
 
     }
 
-
-
-
-
     // render story markup
     const storyMarkup = $(`
       <li id="${story.storyId}"><span class="list-star"><i class="${classOfStar}"></i></span>
@@ -294,8 +302,26 @@ $(async function () {
 
     await storyList.deleteStory(currentUser, storyId)
 
+
+    //if we are not in favorites state then 
     //refresh the entire page for all current stories 
-    await generateStories();
+    if (!isInFavoriteState) {
+      await generateStories();
+    } else {
+      //render only favorites stories
+
+      // empty out that part of the page
+      $allStoriesList.empty();
+
+      // loop through all of our stories and generate HTML for them
+      for (let favoriteStory of currentUser.favorites) {
+        const result = generateStoryHTML(favoriteStory);
+        $allStoriesList.append(result);
+      }
+
+    }
+
+
 
   })
 
@@ -313,6 +339,8 @@ $(async function () {
       const result = generateStoryHTML(favoriteStory);
       $allStoriesList.append(result);
     }
+
+    isInFavoriteState = true
   })
 
 

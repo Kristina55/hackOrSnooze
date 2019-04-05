@@ -76,6 +76,16 @@ class StoryList {
       return storyObj.storyId !== storyId
     })
 
+    //when story is deleted
+    //filter out deleted story from user.favorites and user.ownStories
+    user.favorites = user.favorites.filter(story => {
+      return story.storyId !== storyId
+    })
+
+    user.ownStories = user.ownStories.filter(story => {
+      return story.storyId !== storyId
+    })
+
     return response;
 
   }
