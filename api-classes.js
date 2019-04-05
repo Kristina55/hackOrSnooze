@@ -26,6 +26,22 @@ class StoryList {
     const storyList = new StoryList(stories)
     return storyList;
   }
+
+  async getMoreStories(skipAmount) {
+
+    // query the /stories endpoint (no auth required) and get more stories
+    const response = await $.getJSON(`${BASE_URL}/stories?skip=${skipAmount}&limit=25`);
+
+    // turn the plain old story objects from the API into instances of the Story class
+    const newStories = response.stories.map(story => new Story(story));
+
+    //append stories 
+    this.stories = this.stories.concat(newStories)
+
+    return newStories
+
+  }
+
   /**
      * Method to make a POST request to /stories and add the new story to the list
      The function should accept the current instance of User who will post the story

@@ -19,6 +19,9 @@ $(async function () {
   // global favorite state
   let isInFavoriteState = false;
 
+  // global skip amount
+  let skipAmount = 25
+
   await checkIfLoggedIn();
 
   /**
@@ -103,6 +106,7 @@ $(async function () {
 
     await storyList.addStory(user, storyObj);
     generateStories();
+    skipAmount = 25
   });
 
   /**
@@ -131,6 +135,7 @@ $(async function () {
   $("body").on("click", "#nav-all", async function () {
     hideElements();
     await generateStories();
+    skipAmount = 25
     $allStoriesList.show();
     if (currentUser) {
       $submitForm.show();
@@ -185,6 +190,7 @@ $(async function () {
 
     //update story
     await generateStories();
+    skipAmount = 25
   }
 
   /**
@@ -192,6 +198,7 @@ $(async function () {
    *  which will generate a storyListInstance. Then render it.
    */
   async function generateStories() {
+    skipAmount = 25
     // get an instance of StoryList
     const storyListInstance = await StoryList.getStories();
     // update our global variable
@@ -390,4 +397,36 @@ $(async function () {
       localStorage.setItem("username", currentUser.username);
     }
   }
+
+  function renderMoreStories(newStories) {
+
+    // loop through all of our stories and generate HTML for them
+    for (let story of newStories) {
+      const result = generateStoryHTML(story);
+      $allStoriesList.append(result);
+    }
+  }
+
+
+  $(document).ready(function () {
+    $(window).scroll(async function () {
+
+      var wintop = $(window).scrollTop(), docheight = $(document).height(), winheight = $(window).height();
+      var scrolltrigger = 0.95;
+
+      if ((wintop / (docheight - winheight)) > scrolltrigger) {
+        console.log('scroll bottom');
+
+        let newStories = await storyList.getMoreStories(skipAmount)
+        renderMoreStories(newStories)
+
+        console.log(newStories);
+
+        //increase skip amount by 25
+        skipAmount += 25
+      }
+    });
+  });
 });
+
+
