@@ -245,24 +245,29 @@ $(async function () {
 
 
 
-
   $(".articles-list").on("click", ".fa-star", function () {
 
     let className = $(this).attr("class") === "far fa-star" ? "fas fa-star" : "far fa-star";
-    console.log(className)
+   // console.log(className)
     $(this).attr("class", className)
 
-    console.log($(this).parent().parent().attr('id'))
-
+    //console.log($(this).parent().parent().attr('id'))
+    
     let storyId = $(this).parent().parent().attr('id')
-
+   // 'fas fa-star' (dark star)
     if (className === 'fas fa-star') {
       currentUser.faveStory(storyId)
+    }else {
+      currentUser.unFavoriteStory(storyId)
     }
   })
 
-  $("#favorite-stories").on("click", function(){
 
+
+
+  
+  $("#favorite-stories").on("click", function(){
+console.log(currentUser.favorites)
     // empty out that part of the page
     $allStoriesList.empty();
 

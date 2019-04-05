@@ -88,7 +88,33 @@ class User {
     console.log(response, this.favorites)
   }
 
-  
+
+  async unFavoriteStory(storyId) {
+
+    var token = this.loginToken;
+
+    $.ajax({
+        url:`https://hack-or-snooze-v2.herokuapp.com/users/${this.username}/favorites/${storyId}`,
+        method: "delete",
+        data: { token :token},
+        success:function(response){
+          this.favorites = response.user.favorites;
+          console.log(response, this.favorites)
+        }
+    })
+    
+
+    //let url = `https://hack-or-snooze-v2.herokuapp.com/users/${this.username}/favorites/${storyId}`
+    //let body = {
+      //token: this.loginToken
+    //}
+
+    // const response = await $.delete(url, body);
+
+    // this.favorites = response.user.favorites
+    // console.log(response, this.favorites)
+  }
+
 
   /*
    A class method to create a new user - it accepts a username, password and name
