@@ -244,7 +244,6 @@ $(async function () {
     // create array of Id's of current favorites
 
 
-
     return storyMarkup;
   }
 
